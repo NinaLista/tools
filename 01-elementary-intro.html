@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tekoäly kirjallisuuden kääntämisessä</title>
+<style>
+  :root{
+    --bg:#f4f1ea;
+    --paper:#fffdf8;
+    --ink:#20252b;
+    --muted:#646b73;
+    --line:#d8d2c6;
+    --assist:#285e61;
+    --assist-soft:#e7f0ee;
+    --language:#6d456f;
+    --language-soft:#f0e8f1;
+    --accent:#b75d3f;
+    --note:#f4e7d7;
+    --shadow:0 16px 40px rgba(31,36,41,.09);
+    --radius:22px;
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background:
+      radial-gradient(circle at 10% 0%, rgba(40,94,97,.11), transparent 28%),
+      radial-gradient(circle at 95% 5%, rgba(109,69,111,.11), transparent 30%),
+      var(--bg);
+    color:var(--ink);
+    line-height:1.55;
+  }
+
+  .page{
+    width:min(1500px, 94vw);
+    margin:0 auto;
+    padding:56px 0 72px;
+  }
+
+  header{
+    background:rgba(255,253,248,.9);
+    border:1px solid rgba(216,210,198,.9);
+    border-radius:30px;
+    padding:42px 44px 36px;
+    box-shadow:var(--shadow);
+    position:relative;
+    overflow:hidden;
+  }
+
+  header::after{
+    content:"";
+    position:absolute;
+    width:260px;height:260px;
+    right:-90px;top:-115px;
+    border:42px solid rgba(183,93,63,.12);
+    border-radius:50%;
+  }
+
+  .eyebrow{
+    margin:0 0 10px;
+    font-size:.78rem;
+    font-weight:800;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+  }
+
+  h1{
+    max-width:1050px;
+    margin:0;
+    font-size:clamp(2.2rem,5vw,4.6rem);
+    line-height:.98;
+    letter-spacing:-.045em;
+  }
+
+  .lead{
+    max-width:930px;
+    margin:22px 0 0;
+    font-size:clamp(1rem,1.5vw,1.24rem);
+    color:var(--muted);
+  }
+
+  .split-label{
+    margin:30px auto 0;
+    width:max-content;
+    max-width:100%;
+    padding:10px 16px;
+    border-radius:999px;
+    background:#252b31;
+    color:white;
+    font-size:.88rem;
+    font-weight:750;
+  }
+
+  .branches{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:24px;
+    margin-top:24px;
+    position:relative;
+  }
+
+  .branch{
+    border-radius:var(--radius);
+    padding:26px;
+    border:1px solid var(--line);
+    box-shadow:var(--shadow);
+    min-width:0;
+  }
+
+  .assist{
+    background:linear-gradient(180deg, var(--assist-soft), rgba(255,253,248,.96) 24%);
+  }
+
+  .language{
+    background:linear-gradient(180deg, var(--language-soft), rgba(255,253,248,.96) 24%);
+  }
+
+  .branch-head{
+    display:flex;
+    align-items:flex-start;
+    gap:16px;
+    padding-bottom:18px;
+    border-bottom:1px solid rgba(32,37,43,.12);
+  }
+
+  .number{
+    width:44px;height:44px;
+    border-radius:14px;
+    display:grid;
+    place-items:center;
+    color:white;
+    font-weight:900;
+    flex:0 0 auto;
+  }
+
+  .assist .number{background:var(--assist)}
+  .language .number{background:var(--language)}
+
+  h2{
+    margin:0;
+    font-size:clamp(1.45rem,2.3vw,2.1rem);
+    line-height:1.08;
+    letter-spacing:-.025em;
+  }
+
+  .branch-intro{
+    margin:8px 0 0;
+    color:var(--muted);
+    font-size:.96rem;
+  }
+
+  .cards{
+    display:grid;
+    gap:14px;
+    margin-top:18px;
+  }
+
+  .card{
+    background:rgba(255,255,255,.8);
+    border:1px solid rgba(32,37,43,.11);
+    border-radius:17px;
+    padding:18px 18px 16px;
+  }
+
+  .card h3{
+    margin:0 0 8px;
+    font-size:1rem;
+    line-height:1.25;
+  }
+
+  .card p{
+    margin:0;
+    color:#4f565d;
+    font-size:.93rem;
+  }
+
+  .card ul{
+    margin:9px 0 0;
+    padding-left:1.15rem;
+    color:#4f565d;
+    font-size:.92rem;
+  }
+
+  .card li+li{margin-top:4px}
+
+  .flow{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:12px;
+    margin-top:18px;
+  }
+
+  .factor{
+    background:rgba(255,255,255,.82);
+    border:1px solid rgba(32,37,43,.11);
+    border-radius:16px;
+    padding:15px 16px;
+  }
+
+  .factor b{
+    display:block;
+    margin-bottom:4px;
+    font-size:.95rem;
+  }
+
+  .factor span{
+    color:#5a6067;
+    font-size:.88rem;
+  }
+
+  .arrow{
+    text-align:center;
+    font-weight:900;
+    color:var(--language);
+    padding:8px 0 2px;
+    letter-spacing:.03em;
+  }
+
+  .result{
+    margin-top:8px;
+    padding:19px;
+    border-radius:18px;
+    background:#2b2630;
+    color:white;
+  }
+
+  .result strong{
+    display:block;
+    font-size:1.04rem;
+    margin-bottom:5px;
+  }
+
+  .result p{
+    margin:0;
+    color:#eee8ef;
+    font-size:.92rem;
+  }
+
+  .notes{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+    margin-top:24px;
+  }
+
+  .note{
+    border-radius:20px;
+    padding:22px 24px;
+    border:1px solid #dcc7ae;
+    background:var(--note);
+  }
+
+  .note.dark{
+    background:#242a30;
+    border-color:#242a30;
+    color:white;
+  }
+
+  .note h3{
+    margin:0 0 7px;
+    font-size:1.05rem;
+  }
+
+  .note p{
+    margin:0;
+    color:#5a5148;
+    font-size:.93rem;
+  }
+
+  .note.dark p{color:#dce0e3}
+
+  .bottom-line{
+    margin-top:24px;
+    padding:26px 28px;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:22px;
+    box-shadow:var(--shadow);
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:18px;
+    align-items:start;
+  }
+
+  .mark{
+    width:12px;
+    height:100%;
+    min-height:76px;
+    border-radius:99px;
+    background:linear-gradient(var(--assist), var(--language));
+  }
+
+  .bottom-line strong{
+    display:block;
+    margin-bottom:6px;
+    font-size:1.06rem;
+  }
+
+  .bottom-line p{
+    margin:0;
+    color:var(--muted);
+  }
+
+  footer{
+    margin-top:18px;
+    text-align:center;
+    color:#777d83;
+    font-size:.78rem;
+  }
+
+  @media (max-width: 900px){
+    .branches,.notes{grid-template-columns:1fr}
+    .flow{grid-template-columns:1fr}
+    header{padding:30px 24px}
+    .branch{padding:20px}
+    .page{padding-top:24px}
+  }
+
+  @media print{
+    body{background:white}
+    .page{width:100%;padding:0}
+    header,.branch,.bottom-line{box-shadow:none}
+    .branches{gap:12px}
+    .branch{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<main class="page">
+  <header>
+    <p class="eyebrow">Kirjallisuuden kääntäminen ja AI / Nina Mäki-Kihniä</p>
+    <h1>Tekoäly ei tarkoita yhtä asiaa</h1>
+    <p class="lead">
+      Kirjallisuuden kääntämisessä tekoälyn käytön voi alkajaisiksi jakaa kahteen olennaisesti erilaiseen kokonaisuuteen:
+      tekoäly voi toimia <strong>kääntäjän työn apuna</strong> tai <strong>kielen tuottajana</strong>. Käyttötavat ja tekniset toteutukset voivat olla hyvin erilaisia.
+      Kohdassa 1 lueteltuja esimerkkejä voi toteuttaa monin eri tavoin (esim. pikanäppäinhaku, tietokantapohja, tai notebook-koodityökirja, joka suorittaa tehtävän usein offline, ilman generatiivisen AI:n osallisuutta).
+      Turvallisuuden takia on otettava haltuun tekoälynlukutaitoon ja yleiseen koneenkäyttöön liittyviä best practice -tapoja.
+
+      Tutustu: Google Colab, Unsloth, Ollama, AnythingLLM; Google Notebook; Google AI Studio (viimeisen käytössä paljon caveateja)
+    </p>
+    <div class="split-label">AI-avusteisia työvaiheita</div>
+  </header>
+
+  <section class="branches">
+    <article class="branch assist">
+      <div class="branch-head">
+        <div class="number">1</div>
+        <div>
+          <h2>Tekoäly kääntämisen apuna - muutamia esimerkkejä</h2>
+          <p class="branch-intro">
+            Kielimalli voi tukea kääntäjän työprosessia ilman, että se tuottaa varsinaista käännöstekstiä.
+            Tavoitteena esim. keskittymisen suojaaminen mielekkääseen työhön, tiedonhaun sujuvoittaminen, ohjelman optimointi, oman osaamisen vahvistaminen tai omien työvaiheiden dokumentointi.
+          </p>
+        </div>
+      </div>
+
+      <div class="cards">
+        <section class="card">
+          <h3>Tiedonhaun monet muodot</h3>
+          <p>
+            Tiedonhaku, taustaselvitykset, sanojen merkityssisällöt, synonymia, vaihtoehtoiset ilmaisut, kielitietous jne.
+          <ul>            
+            <li>Kirjaa, kokoa, luokittele kysymykset & ongelmat (apuohjelmalla) -> pohjatyö (AI) -> tulkitse ammattitaidolla (ihminen))</li>
+            <li>Tiedon tyyppi, tietolähteet ja oma työtapa vaikuttavat hakuapurien toteutustapaan (esim. kevyestä raskaampaan näppäimistöohjaus, makrot, AI, työketju).</li>
+          </ul>
+          </p>
+        </section>
+
+        <section class="card">
+          <h3>Pienet apuohjelmat</h3>
+          <p>
+            Työnkulun tai projektin vaiheeseen sopiva apuohjelma (esim. makro, selainpohjainen "pikkuapp")
+            toistuvien, mekaanisten vaiheiden sujuvoittamiseksi. Tekovaiheessa AI auttaa, usein toimii lokaalisti, ilman generatiivista tekoälyä.
+          </p>
+          <ul>
+            <li>taivutusmuotojen yhtenäisyyden tarkistaja (esim. listaa ristiriidat rakenteessa, kuten "analyysia/analyysiä")</li>
+            <li>tarkkeiden tarkistaja (näytä eri muodot, esim. Chloé, Chloe, Chloè)  </li>
+            <li>rakenteisten asioiden osoittaminen tekstistä</li>
+            <li>"kopioi nettisivulta valittu tieto ja samalla nettiosoite" -> "liitä muistiinpanoon tiedon dokumentaatioksi"</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h3>Tietokannat käyttöön luonnollisella kielellä</h3>
+          <p>
+            Kielimalli voidaan valjastaa hakemaan tietoa vain valikoiduista tietolähteistä
+            tai projektia varten (kielimallin avulla) itse koostetusta tietokannasta.
+            Läpinäkyvyyttä ja varmuutta toimintaan tuo tiukasti rajattu, tarvittaessa lähdeviitteistetty AI-vastaus. Semanttinen haku monipuolistaa perinteistä hakua.
+          <ul>
+            <li>erisnimet & eksonyymit: englanti, kyrilliset, suomi / aasialaiset kielet: litterointiapuri, Wiki-haku, tietokannat</li>
+            <li>sananparsihakuri: semanttinen haku luonnollisella kielellä tietokannasta</li>
+            <li>vanhat kieliainekset: erilaiset hakutavat luonnollisella kielellä räätälöidyistä tietokannoista</li>
+            <li>"kysy tästä teoksesta" -tyyppiset ratkaisut (tietoturva!, muut LLM-rajoitteet!)</li>
+          </p>
+        </section>
+
+        <section class="card">
+          <h3>Ammattitaidon kehittäminen ja tukeminen</h3>
+          Käännösstrategiat ja tekstien rakenteen tarkastelu. Hyvin erilaisia tapoja!
+          <ul>
+            <li>käytännönläheiset miniopinnot omaan täsmätarpeeseen</li>
+            <li>kielitietouden tiivistäminen käytännön näkökulmasta</li>
+            <li>tekstin ominaisuuksien osoittaminen (rakenteet, semanttiset näkökulmat)</li>
+            <li>tekstiin tehtyjen editointien analyysi</li>
+          </ul>
+        </section>
+      </div>
+    </article>
+
+    <article class="branch language">
+      <div class="branch-head">
+        <div class="number">2</div>
+        <div>
+          <h2>Tekoäly kielen tuottajana</h2>
+          <p class="branch-intro">
+            Kun kielimalli tuottaa kieltä, lopputulos ei määräydy vain tehtävänannosta.
+            Se riippuu koko käytetystä järjestelmästä, kuten seuraavista seikoista:
+          </p>
+        </div>
+      </div>
+
+      <div class="flow">
+        <div class="factor">
+          <b>Kielimalli</b>
+          <span>Mikä malli on käytössä ja millaisiin tehtäviin se kykenee?</span>
+        </div>
+        <div class="factor">
+          <b>Koulutusaineisto</b>
+          <span>Millaisella aineistolla mallin kielikyky ja tietopohja on muodostettu? Millaista kieltä  malli on suunniteltu tuottamaan? Millaisia tehtäviä suorittamaan?</span>
+        </div>
+        <div class="factor">
+          <b>Jatko-opetus</b>
+          <span>Millä aineistolla ja millä menetelmällä mallia on opetettu?</span>
+        </div>
+        <div class="factor">
+          <b>Tuotoksen ohjeistus</b>
+          <span>Miten mallia ohjataan tuottamaan parasta halutunlaista kieltä, johon se pystyy? --> </span>
+        </div>
+        <div class="factor">
+          <b>Kehotteet (prompt), ohjeistustiedosto/t (skill/s), muisti, konteksti</b>
+          <span>Ihmisen kirjoittama? AI-ohjatusti kirjoitettu? Monimutkaisempi skills-setti? Pysyvämpi toimintatapa (järjestelmäpromptit, muisti)? Konteksti (esim. tietolähdetiedostot)? </span>
+        </div>
+        <div class="factor">
+          <b>Agenttisuus ja työkalut</b>
+          <span>Miten malli käyttää apuohjelmia, koodausta, tietokantoja tai muita sille annettuja taitoja?</span>
+        </div>
+        <div class="factor">
+          <b>Päättelyn määrä</b>
+          <span>Kuinka vaativaa analyysia järjestelmältä voi käytännössä odottaa? Jotkut tehtävät hyötyvät vähemmästä päättelystä!</span>
+        </div>
+        <div class="factor">
+          <b>Digitaaliset "valjaat", reunaehdot, rajoitukset, itsekorjautuvuus</b>
+          <span>Millaiset säännöt, suojaukset ja tekniset rajat ohjaavat toimintaa?</span>
+        </div>
+      </div>
+
+      <div class="arrow">↓</div>
+
+      <div class="result">
+        <strong>Lopputulos syntyy näiden yhteisvaikutuksesta.</strong>
+        <p>
+          Ei ole enää mielekästä puhua yhdestä yleisestä tavasta, jolla “tekoäly kirjoittaa”.
+          Eri mallit, ohjaustavat, työkalut ja rajoitteet voivat tuottaa hyvin eri tavalla toimivia järjestelmiä.
+          Tekoälyn voi koulia tuottamaan vähemmän "tekoälymäistä" tekstiä (estetään tietyt rakenteet) tai tuottamaan haluttuja piirteitä korostavaa kieltä: siihen on teholtaan erilaisia keinoja sekä ohjauksen suunnalta (promptit, skills) että opetusvaiheessa.
+        </p>
+      </div>
+    </article>
+  </section>
+
+  <section class="notes">
+    <article class="note">
+      <h3>Tekoälyllä voi rakentaa työkalun ilman, että työkalu itse käyttää tekoälyä</h3>
+      <p>
+        Tekoälyn (kielimallin) avulla voidaan tehdä yllä olevan kaltaisia apureita niin,
+        että valmis ohjelma toimii täysin deterministisesti/sääntöpohjaisesti ilman kielimallia, ilman verkkoyhteyttä. 
+      </p>
+    </article>
+
+    <article class="note dark">
+      <h3>Tietoturva on lähtökohta, ei sivuseikka</h3>
+      <p>
+        Hallussa olevaa toisten tekstiä on suojeltava. Monia tehtäviä voidaan toteuttaa eriyttämällä ongelma.
+        Joissakin tehtävissä tehokkain ratkaisu olisi tekijänoikeuden haltijan tarjoama suojattu ympäristö,
+        jossa laadukkaita AI-toimintoja voidaan käyttää hallitusti.
+      </p>
+    </article>
+  </section>
+
+  <section class="bottom-line">
+    <div class="mark"></div>
+    <div>
+      <strong>Keskeinen ajatus</strong>
+      <p>
+        “Tekoälyn käyttö kirjallisuuden kääntämisessä” ei kuvaa yhtä työmenetelmää.
+        Se voi tarkoittaa monipuolisia tiedonhakutapoja, kielen rakenteista analyysiä, oman aiheosaamisen kehittämistä, ohjelmistotyökaluja,
+        tietokantojen runsaita mahdollisuuksia tai varsinaista kielen tuottamista hyvin eri tavoin. Niin työkalujen kuin kielen tuottamisen kohdalla lopputulos
+        riippuu ratkaisevasti siitä, millainen malli ja sitä ympäröivä järjestelmä on rakennettu ja miten ohjaus tapahtuu.
+      </p>
+    </div>
+  </section>
+
+  <footer>
+    Muutamia esimerkkejä.
+  </footer>
+</main>
+</body>
+</html>
