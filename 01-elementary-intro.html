@@ -338,9 +338,9 @@
       Kirjallisuuden kääntämisessä tekoälyn käytön voi alkajaisiksi jakaa kahteen olennaisesti erilaiseen kokonaisuuteen:
       tekoäly voi toimia <strong>kääntäjän työn apuna</strong> tai <strong>kielen tuottajana</strong>. Käyttötavat ja tekniset toteutukset voivat olla hyvin erilaisia.
       Kohdassa 1 lueteltuja esimerkkejä voi toteuttaa monin eri tavoin (esim. pikanäppäinhaku, tietokantapohja, tai notebook-koodityökirja, joka suorittaa tehtävän usein offline, ilman generatiivisen AI:n osallisuutta).
-      Turvallisuuden takia on otettava haltuun tekoälynlukutaitoon ja yleiseen koneenkäyttöön liittyviä best practice -tapoja.
+      Turvallisuuden takia on otettava haltuun tekoälynlukutaitoon ja yleiseen koneenkäyttöön liittyviä best practice -tapoja.  
 
-      Tutustu: Google Colab, Unsloth, Ollama, AnythingLLM; Google Notebook; Google AI Studio (viimeisen käytössä paljon caveateja)
+      Tutustu: Google Colab, Unsloth, Ollama, AnythingLLM; Google Notebook; Google AI Studio (viimeisen käytössä paljon caveateja) [9/2026]
     </p>
     <div class="split-label">AI-avusteisia työvaiheita</div>
   </header>
@@ -373,8 +373,8 @@
         <section class="card">
           <h3>Pienet apuohjelmat</h3>
           <p>
-            Työnkulun tai projektin vaiheeseen sopiva apuohjelma (esim. makro, selainpohjainen "pikkuapp")
-            toistuvien, mekaanisten vaiheiden sujuvoittamiseksi. Tekovaiheessa AI auttaa, usein toimii lokaalisti, ilman generatiivista tekoälyä.
+            Työnkulun tai projektin vaiheeseen sopiva apuohjelma (esim. makro, selainpohjainen "pikkuapp", erilaisia kirjastoja käyttävä koodi)
+            toistuvien, mekaanisten vaiheiden sujuvoittamiseksi. AI auttaa kehitysvaiheessa, lopputulos voi toimia lokaalisti ja ilman generatiivista tekoälyä.
           </p>
           <ul>
             <li>taivutusmuotojen yhtenäisyyden tarkistaja (esim. listaa ristiriidat rakenteessa, kuten "analyysia/analyysiä")</li>
@@ -464,7 +464,7 @@
         <strong>Lopputulos syntyy näiden yhteisvaikutuksesta.</strong>
         <p>
           Ei ole enää mielekästä puhua yhdestä yleisestä tavasta, jolla “tekoäly kirjoittaa”.
-          Eri mallit, ohjaustavat, työkalut ja rajoitteet voivat tuottaa hyvin eri tavalla toimivia järjestelmiä.
+          Eri mallit, ohjaustavat, työkalut ja rajoitteet voivat tuottaa eri tavalla toimivia järjestelmiä.
           Tekoälyn voi koulia tuottamaan vähemmän "tekoälymäistä" tekstiä (estetään tietyt rakenteet) tai tuottamaan haluttuja piirteitä korostavaa kieltä: siihen on teholtaan erilaisia keinoja sekä ohjauksen suunnalta (promptit, skills) että opetusvaiheessa.
         </p>
       </div>
@@ -473,9 +473,9 @@
 
   <section class="notes">
     <article class="note">
-      <h3>Tekoälyllä voi rakentaa työkalun ilman, että työkalu itse käyttää tekoälyä</h3>
+      <h3>Tekoälyllä voi rakentaa työkalun, joka ei käytä tekoälyä</h3>
       <p>
-        Tekoälyn (kielimallin) avulla voidaan tehdä yllä olevan kaltaisia apureita niin,
+        Tekoälyn (kielimallien) avulla voidaan tehdä yllä olevan kaltaisia apureita niin,
         että valmis ohjelma toimii täysin deterministisesti/sääntöpohjaisesti ilman kielimallia, ilman verkkoyhteyttä. 
       </p>
     </article>
@@ -497,14 +497,14 @@
       <p>
         “Tekoälyn käyttö kirjallisuuden kääntämisessä” ei kuvaa yhtä työmenetelmää.
         Se voi tarkoittaa monipuolisia tiedonhakutapoja, kielen rakenteista analyysiä, oman aiheosaamisen kehittämistä, ohjelmistotyökaluja,
-        tietokantojen runsaita mahdollisuuksia tai varsinaista kielen tuottamista hyvin eri tavoin. Niin työkalujen kuin kielen tuottamisen kohdalla lopputulos
-        riippuu ratkaisevasti siitä, millainen malli ja sitä ympäröivä järjestelmä on rakennettu ja miten ohjaus tapahtuu.
+        tietokantojen runsaita mahdollisuuksia tai varsinaista kielen tuottamista monin eri tavoin ja tarkoituksiin. Niin työkalujen kuin kielen tuottamisen kohdalla lopputulos
+        on ratkaisevasti kiinni siitä, millainen malli ja sitä ympäröivä järjestelmä on rakennettu, miten työkalua käyttää tai ohjaus, ja miten tulosta arvioi ja käyttää.
       </p>
     </div>
   </section>
 
   <footer>
-    Muutamia esimerkkejä.
+    
   </footer>
 </main>
 </body>
